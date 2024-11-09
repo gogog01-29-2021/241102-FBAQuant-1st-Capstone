@@ -1,3 +1,9 @@
+<.tex
+
 interface and implementation of Approximate Policy Evaluation and Approximate Value Iteration (in file rl/approximate_dynamic_programming.py), then design the interface of Approximate Policy Iteration to be the same as that of Approximate Value Iteration. Note that your implementation of Approximate Policy Iteration would need to invoke Approximate Policy Evaluation since Policy Evaluation is a component of Policy Iteration. Test that your implementation is correct in two ways:
 •	Ensure that Approximate Policy Iteration gives the same Optimal Value Function/Optimal Policy as that obtained by Approximate Value Iteration.
 •	Ensure that Approximate Policy Iteration produces the same result as our prior implementation of Policy Iteration (in file rl/dynamic_programming.py). For this you need to pass to your implementation of Approximate Policy Iteration a FiniteMarkovDecisionProcess input and a Tabular instance for the FunctionApprox input.
+
+
+
+2. Problem statement of Utility function vs Kelly und Markowitz Portfolio
