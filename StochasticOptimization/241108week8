@@ -1,5 +1,5 @@
 <.tex
-
+https://chatgpt.com/c/672e2b49-ef7c-8008-8186-0fa981bd2b5c
 interface and implementation of Approximate Policy Evaluation and Approximate Value Iteration (in file rl/approximate_dynamic_programming.py), then design the interface of Approximate Policy Iteration to be the same as that of Approximate Value Iteration. Note that your implementation of Approximate Policy Iteration would need to invoke Approximate Policy Evaluation since Policy Evaluation is a component of Policy Iteration. Test that your implementation is correct in two ways:
 •	Ensure that Approximate Policy Iteration gives the same Optimal Value Function/Optimal Policy as that obtained by Approximate Value Iteration.
 •	Ensure that Approximate Policy Iteration produces the same result as our prior implementation of Policy Iteration (in file rl/dynamic_programming.py). For this you need to pass to your implementation of Approximate Policy Iteration a FiniteMarkovDecisionProcess input and a Tabular instance for the FunctionApprox input.
@@ -7,3 +7,100 @@ interface and implementation of Approximate Policy Evaluation and Approximate Va
 
 
 2. Problem statement of Utility function vs Kelly und Markowitz Portfolio
+
+
+Bellman jacobi Function
+
+
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+
+\section*{Solution to Merton’s Portfolio Problem with Log Utility}
+
+In Merton’s portfolio problem, we aim to maximize the expected utility of an investor's wealth by optimally allocating capital between:
+- A risky asset with expected return \( \mu \) and volatility \( \sigma \).
+- A risk-free asset with return \( r \).
+
+The utility function is logarithmic:
+\[
+U(W) = \log(W)
+\]
+which represents constant relative risk aversion (CRRA) with a risk aversion parameter \( \gamma = 1 \).
+
+### 1. Wealth Dynamics
+
+Let \( W(t) \) be the wealth at time \( t \). The proportion \( \pi(t) \) of wealth invested in the risky asset influences the wealth dynamics, given by:
+\[
+dW = W \left( (r + \pi(\mu - r)) \, dt + \pi \sigma \, dZ \right)
+\]
+where \( dZ \) is a standard Wiener process.
+
+### 2. Objective
+
+Our objective is to maximize the expected utility of terminal wealth \( W(T) \):
+\[
+\max_{\pi} \, \mathbb{E}[\log(W(T))]
+\]
+
+### 3. Applying the Hamilton-Jacobi-Bellman (HJB) Equation
+
+The HJB equation is used to find the value function \( V(W, t) \), representing the maximum expected utility given wealth \( W \) at time \( t \). The HJB equation is:
+\[
+0 = \max_{\pi} \left\{ \frac{\partial V}{\partial t} + (r + \pi(\mu - r)) W \frac{\partial V}{\partial W} + \frac{1}{2} \pi^2 \sigma^2 W^2 \frac{\partial^2 V}{\partial W^2} \right\}
+\]
+
+### 4. Guess the Functional Form of \( V(W, t) \)
+
+For log utility, we assume a solution of the form:
+\[
+V(W, t) = \log(W) + f(t)
+\]
+where \( f(t) \) is a function of time only.
+
+### 5. Substituting into the HJB Equation
+
+With \( V(W, t) = \log(W) + f(t) \):
+
+- The partial derivative with respect to \( W \):
+  \[
+  \frac{\partial V}{\partial W} = \frac{1}{W}
+  \]
+
+- The second partial derivative with respect to \( W \):
+  \[
+  \frac{\partial^2 V}{\partial W^2} = -\frac{1}{W^2}
+  \]
+
+Substitute these derivatives into the HJB equation:
+\[
+0 = \max_{\pi} \left\{ \frac{df}{dt} + (r + \pi(\mu - r)) \cdot 1 + \frac{1}{2} \pi^2 \sigma^2 \cdot (-1) \right\}
+\]
+
+This simplifies to:
+\[
+0 = \frac{df}{dt} + r + \pi(\mu - r) - \frac{1}{2} \pi^2 \sigma^2
+\]
+
+### 6. Maximizing with respect to \( \pi \)
+
+To find the optimal \( \pi \), take the derivative of the right-hand side with respect to \( \pi \) and set it to zero:
+\[
+\frac{d}{d\pi} \left( \pi(\mu - r) - \frac{1}{2} \pi^2 \sigma^2 \right) = 0
+\]
+
+This gives:
+\[
+\mu - r - \pi \sigma^2 = 0
+\]
+
+Solving for \( \pi \), we find the optimal fraction of wealth to invest in the risky asset:
+\[
+\pi^* = \frac{\mu - r}{\sigma^2}
+\]
+
+### 7. Interpretation
+
+The optimal allocation \( \pi^* = \frac{\mu - r}{\sigma^2} \) suggests that the fraction of wealth to invest in the risky asset increases with the **risk premium** \( \mu - r \) and decreases with the **variance** \( \sigma^2 \) of the risky asset. This result aligns with the intuition that investors allocate more to the risky asset when expected returns are high and less when risk is high.
+
+\end{document}
